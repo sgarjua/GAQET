@@ -17,7 +17,7 @@ GAQET is a Python-based tool designed to evaluate the quality of genome annotati
 Clone this repository:
 
 ```bash
-git clone https://github.com/victorgcb1987/GAQET.git
+git clone https://github.com/sgarjua/GAQET.git
 ```
 
 Create a conda enviroment:
