@@ -5,12 +5,6 @@ GAQET is a Python-based tool designed to evaluate the quality of genome annotati
 
 ## Requirements
 
-### Python Dependencies (??????)
-
-- Python == 3.10
-- ete3
-- PyYAML
-
 ### Software dependencies
 - AGAT == 1.4.2 (https://github.com/NBISweden/AGAT)
 - GFFread == 0.12.7 (https://github.com/gpertea/gffread)
