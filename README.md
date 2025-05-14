@@ -61,6 +61,6 @@ With the FOF you can **run GAQET** as follows:
 GAQET.py -i samples.fof -o results/ -t 8
 ```
 
--i, --input Path to the FOF (TSV)
--o, --output Output directory (will contain one subfolder per sample)
--t, --threads Number of CPU threads to use (default: 1)
+-i, --input Path to the FOF (TSV);
+-o, --output Output directory (will contain one subfolder per sample);
+-t, --threads Number of CPU threads to use (default: 1);
