@@ -196,7 +196,7 @@ def run_LTR_retriever(arguments: Dict[str, Any]) -> Dict[str, Any]:
                                                                                 arguments["threads"])
 
     # Check if LTR_retriever is already done
-    outfile = arguments["LAI_dir"] / "{}.mod.pass.list".format(Path(arguments["ref_assembly"]).name)
+    outfile = arguments["LAI_dir"] / "{}.pass.list".format(Path(arguments["ref_assembly"]).name)
     if outfile.exists():
         return {"command": cmd, 
                 "msg": "LTR_retriever already done",
@@ -230,12 +230,12 @@ def run_LAI(arguments: Dict[str, Any]) -> Dict[str, Any]:
     cwd = Path(os.getcwd())
 
     # LAI command
-    cmd = "LAI -genome {} -intact {}.mod.pass.list -all {}.mod.out".format(Path(arguments["ref_assembly"]).name,
-                                                                            Path(arguments["ref_assembly"]).name,
-                                                                            Path(arguments["ref_assembly"]).name)
+    cmd = "LAI -genome {} -intact {}.pass.list -all {}.out".format(Path(arguments["ref_assembly"]).name,
+                                                                  Path(arguments["ref_assembly"]).name,
+                                                                  Path(arguments["ref_assembly"]).name)
 
 
-    outfile = arguments["LAI_dir"] / "{}.mod.out.LAI".format(Path(arguments["ref_assembly"]).name)
+    outfile = arguments["LAI_dir"] / "{}.out.LAI".format(Path(arguments["ref_assembly"]).name)
     if outfile.exists():
         return {"command": cmd, 
                 "msg": "LAI already done",

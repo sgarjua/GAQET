@@ -12,8 +12,10 @@ GAQET.py -i samples.fof -o results/ -t 8
 # === Standard library imports ===
 import argparse
 import sys
+import time
 from csv import DictReader
 from pathlib import Path
+from datetime import datetime
 
 # === Project-specific imports ===
 from src.agat import run_agat, get_agat_stats
