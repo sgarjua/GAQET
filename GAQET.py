@@ -93,7 +93,7 @@ def main():
         start_time = time.time()
         agat_statistics = run_agat(values)
         end_time = time.time()
-        emit_msg("Time consumed by GenomeAnnStats: {}s\n".format(round(end_time-start_time, 2)))
+        print("Time consumed by GenomeAnnStats: {}s\n".format(round(end_time-start_time, 2)))
         stats[name]["agat_statistics"] = get_agat_stats(agat_statistics)
 
         # BUSCO
