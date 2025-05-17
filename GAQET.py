@@ -87,13 +87,17 @@ def main():
         values["threads"] = arguments["threads"]
         if not name_dir.exists():
             name_dir.mkdir(parents=True, exist_ok=True)
+        start = time.ctime()
 
         # AGAT
+        start_time = time.time()
         agat_statistics = run_agat(values)
-        print(agat_statistics)
+        end_time = time.time()
+        emit_msg("Time consumed by GenomeAnnStats: {}s\n".format(round(end_time-start_time, 2)))
         stats[name]["agat_statistics"] = get_agat_stats(agat_statistics)
 
         # BUSCO
+        start_time = time.time()
         gffread_results = run_gffread(values)
         print(gffread_results)
         busco_results = run_busco(values)
