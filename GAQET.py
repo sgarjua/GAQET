@@ -93,7 +93,8 @@ def main():
         start_time = time.time()
         agat_statistics = run_agat(values)
         end_time = time.time()
-        print("Time consumed by GenomeAnnStats: {}s\n".format(round(end_time-start_time, 2)))
+        print(agat_statistics)
+        print("\nTime consumed by GenomeAnnStats: {}s\n\n".format(round(end_time-start_time, 2)))
         stats[name]["agat_statistics"] = get_agat_stats(agat_statistics)
 
         # BUSCO
@@ -102,9 +103,12 @@ def main():
         print(gffread_results)
         busco_results = run_busco(values)
         print(busco_results)
+        end_time = time.time()
+        print("\nTime consumed by BUSCOCompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
         stats[name]["busco_results"] = get_busco_results(busco_results, lineage=values["lineage"])
 
         # LAI
+        start_time = time.time()
         LAI_out_dir =  create_outdir(values)
         print(LAI_out_dir)
         values["LAI_dir"] = LAI_out_dir["out_fpath"]
@@ -123,15 +127,20 @@ def main():
         print(LTR)
         LAI = run_LAI(values)
         print(LAI)
+        end_time = time.time()
+        print("\nTime consumed by LAICompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
         stats[name]["LAI"] = get_LAI(LAI)
 
         # RNA-seq support
+        start_time = time.time()
         stringtie = run_stringtie(values)
         print(stringtie)
         gffcompare = run_gffcompare(values)
         print(gffcompare)
         annotation_scores = calculate_annotation_scores(values)
         print(annotation_scores)
+        end_time = time.time()
+        print("\nTime consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
         stats[name]["annotation_scores"] = annotation_scores
 
     # Write summary as a table
