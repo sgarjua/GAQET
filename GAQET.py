@@ -155,6 +155,7 @@ def main():
             print("Vamos a por el bam: ", bam)
             print("---------------------------------------------")
             values["alignments"] = dir_bam + bam
+            print(values["alignments"])
             # RNA-seq support
             stringtie = run_stringtie(values)
             print(stringtie)
