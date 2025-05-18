@@ -91,6 +91,7 @@ def main():
 
     # For each sample: create a folder, run the 4 pipelines and save results in "stats"
     for name, values in arguments["input"].items():
+        print("Especie: ",name)
         write_time_in_file(route_time_file, name)
         stats[name] = {}
         name_dir = out_dir / name
@@ -151,6 +152,8 @@ def main():
         start_time = time.time()
 
         for bam in list_bam_files:
+            print("Vamos a por el bam: ", bam)
+            print("---------------------------------------------")
             values["alignments"] = dir_bam + bam
             # RNA-seq support
             stringtie = run_stringtie(values)
