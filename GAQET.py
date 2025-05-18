@@ -147,7 +147,7 @@ def main():
         dir_bam: str = values["alignments"]
         list_bam_files = [file for file in dir_bam if file.endswith(".bam")]
         start_time = time.time()
-        
+
         for bam in list_bam_files:
             values["alignments"] = dir_bam + bam
             # RNA-seq support
@@ -173,9 +173,9 @@ def main():
         
         for name in arguments["input"]:
             results = [name]
-            results += [stats[name]["agat_statistics"][stat] for stat in AGAT_COLS]
-            results += [stats[name]["busco_results"]]
-            results += [stats[name]["LAI"]]
+            # results += [stats[name]["agat_statistics"][stat] for stat in AGAT_COLS]
+            # results += [stats[name]["busco_results"]]
+            # results += [stats[name]["LAI"]]
             results += [stats[name][bam]["annotation_scores"][score] for score in RNASEQ_COLS for bam in stats[name].keys()]
             summary.write("\t".join(results)+"\n")
         
