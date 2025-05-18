@@ -16,6 +16,7 @@ import time
 from csv import DictReader
 from pathlib import Path
 from datetime import datetime
+import os
 
 # === Project-specific imports ===
 from src.agat import run_agat, get_agat_stats
@@ -29,8 +30,7 @@ from src.table import AGAT_COLS, RNASEQ_COLS
 
 
 def write_time_in_file(file: str, text: str):
-    mode = 'w' if Path(file).exists() else 'x'
-    with open(file, mode) as f:
+    with open(file, 'a') as f:
         f.write(text+"\n")
 
 
@@ -100,59 +100,67 @@ def main():
             name_dir.mkdir(parents=True, exist_ok=True)
         start = time.ctime()
 
-        # AGAT
-        start_time = time.time()
-        agat_statistics = run_agat(values)
-        end_time = time.time()
-        print(agat_statistics)
-        write_time_in_file(route_time_file, "   Time consumed by GenomeAnnStats: {}s\n\n".format(round(end_time-start_time, 2)))
-        stats[name]["agat_statistics"] = get_agat_stats(agat_statistics)
+        # # AGAT
+        # start_time = time.time()
+        # agat_statistics = run_agat(values)
+        # end_time = time.time()
+        # print(agat_statistics)
+        # write_time_in_file(route_time_file, "   Time consumed by GenomeAnnStats: {}s\n\n".format(round(end_time-start_time, 2)))
+        # stats[name]["agat_statistics"] = get_agat_stats(agat_statistics)
 
-        # BUSCO
-        start_time = time.time()
-        gffread_results = run_gffread(values)
-        print(gffread_results)
-        busco_results = run_busco(values)
-        print(busco_results)
-        end_time = time.time()
-        print("\nTime consumed by BUSCOCompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
-        stats[name]["busco_results"] = get_busco_results(busco_results, lineage=values["lineage"])
+        # # BUSCO
+        # start_time = time.time()
+        # gffread_results = run_gffread(values)
+        # print(gffread_results)
+        # busco_results = run_busco(values)
+        # print(busco_results)
+        # end_time = time.time()
+        # write_time_in_file(route_time_file, "   Time consumed by BUSCOCompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
+        # print("\nTime consumed by BUSCOCompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
+        # stats[name]["busco_results"] = get_busco_results(busco_results, lineage=values["lineage"])
 
-        # LAI
-        start_time = time.time()
-        LAI_out_dir =  create_outdir(values)
-        print(LAI_out_dir)
-        values["LAI_dir"] = LAI_out_dir["out_fpath"]
-        suffixerator =  run_suffixerator(values)
-        if "returncode" in suffixerator:
-            if suffixerator["returncode"] == 1:
-                raise RuntimeError("Suffixerator has failed")
-        print(suffixerator)
-        harvest = run_harvest(values)
-        print(harvest)
-        finder = run_finder(values)
-        print(finder)
-        cat = concatenate_outputs(values)
-        print(cat)
-        LTR = run_LTR_retriever(values)
-        print(LTR)
-        LAI = run_LAI(values)
-        print(LAI)
-        end_time = time.time()
-        print("\nTime consumed by LAICompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
-        stats[name]["LAI"] = get_LAI(LAI)
+        # # LAI
+        # start_time = time.time()
+        # LAI_out_dir =  create_outdir(values)
+        # print(LAI_out_dir)
+        # values["LAI_dir"] = LAI_out_dir["out_fpath"]
+        # suffixerator =  run_suffixerator(values)
+        # if "returncode" in suffixerator:
+        #     if suffixerator["returncode"] == 1:
+        #         raise RuntimeError("Suffixerator has failed")
+        # print(suffixerator)
+        # harvest = run_harvest(values)
+        # print(harvest)
+        # finder = run_finder(values)
+        # print(finder)
+        # cat = concatenate_outputs(values)
+        # print(cat)
+        # LTR = run_LTR_retriever(values)
+        # print(LTR)
+        # LAI = run_LAI(values)
+        # print(LAI)
+        # end_time = time.time()
+        # write_time_in_file(route_time_file, "   Time consumed by LAICompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
+        # print("\nTime consumed by LAICompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
+        # stats[name]["LAI"] = get_LAI(LAI)
 
-        # RNA-seq support
-        start_time = time.time()
-        stringtie = run_stringtie(values)
-        print(stringtie)
-        gffcompare = run_gffcompare(values)
-        print(gffcompare)
-        annotation_scores = calculate_annotation_scores(values)
-        print(annotation_scores)
+        dir_bam: str = values["alignments"]
+        list_bam_files = [file for file in dir_bam if file.endswith(".bam")]
+
+        for bam in list_bam_files:
+            values["alignments"] = dir_bam + bam
+            # RNA-seq support
+            start_time = time.time()
+            stringtie = run_stringtie(values)
+            print(stringtie)
+            gffcompare = run_gffcompare(values)
+            print(gffcompare)
+            annotation_scores = calculate_annotation_scores(values)
+            print(annotation_scores)
+            stats[name][bam]["annotation_scores"] = annotation_scores
         end_time = time.time()
         print("\nTime consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
-        stats[name]["annotation_scores"] = annotation_scores
+        write_time_in_file(route_time_file, "   Time consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
 
     # Write summary as a table
     with open("summary.tsv", "w") as summary:
@@ -168,7 +176,7 @@ def main():
             results += [stats[name]["agat_statistics"][stat] for stat in AGAT_COLS]
             results += [stats[name]["busco_results"]]
             results += [stats[name]["LAI"]]
-            results += [stats[name]["annotation_scores"][score] for score in RNASEQ_COLS]
+            results += [stats[name][bam]["annotation_scores"][score] for score in RNASEQ_COLS for bam in stats[name].keys()]
             summary.write("\t".join(results)+"\n")
         
 if __name__ == "__main__":
