@@ -145,7 +145,7 @@ def main():
         # stats[name]["LAI"] = get_LAI(LAI)
 
         dir_bam: str = values["alignments"]
-        list_bam_files = [file for file in dir_bam if file.endswith(".bam")]
+        list_bam_files = [file for file in os.listdir(dir_bam) if file.endswith(".bam")]
         print(list_bam_files)
         print(len(list_bam_files))
         start_time = time.time()
