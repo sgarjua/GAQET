@@ -146,11 +146,11 @@ def main():
 
         dir_bam: str = values["alignments"]
         list_bam_files = [file for file in dir_bam if file.endswith(".bam")]
-
+        start_time = time.time()
+        
         for bam in list_bam_files:
             values["alignments"] = dir_bam + bam
             # RNA-seq support
-            start_time = time.time()
             stringtie = run_stringtie(values)
             print(stringtie)
             gffcompare = run_gffcompare(values)
