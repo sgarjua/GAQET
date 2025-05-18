@@ -159,6 +159,7 @@ def main():
             print(gffcompare)
             annotation_scores = calculate_annotation_scores(values)
             print(annotation_scores)
+            stats[name][bam] = {}
             stats[name][bam]["annotation_scores"] = annotation_scores
         end_time = time.time()
         print("\nTime consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
