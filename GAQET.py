@@ -28,6 +28,12 @@ from src.stringtie import run_stringtie, run_gffcompare, calculate_annotation_sc
 from src.table import AGAT_COLS, RNASEQ_COLS
 
 
+def write_time_in_file(file: str, text: str):
+    mode = 'w' if Path(file).exists() else 'x'
+    with open(file, mode) as f:
+        f.write(text+"\n")
+
+
 # ---------------------------------------------------------------------------
 # CLI helpers
 # ---------------------------------------------------------------------------
@@ -71,6 +77,7 @@ def get_arguments():
 def main():
     """Run all analyses and write `summary.tsv`."""
     arguments = get_arguments()
+
     # Output directory
     out_dir =  arguments["output"]
     if not out_dir.exists():
@@ -79,8 +86,12 @@ def main():
     # Dictionary for results  
     stats = {}   
 
+    name_time_file: str = "time_file.txt"
+    route_time_file = out_dir / name_time_file
+
     # For each sample: create a folder, run the 4 pipelines and save results in "stats"
     for name, values in arguments["input"].items():
+        write_time_in_file(route_time_file, name)
         stats[name] = {}
         name_dir = out_dir / name
         values["output"] = name_dir
@@ -94,7 +105,7 @@ def main():
         agat_statistics = run_agat(values)
         end_time = time.time()
         print(agat_statistics)
-        print("\nTime consumed by GenomeAnnStats: {}s\n\n".format(round(end_time-start_time, 2)))
+        write_time_in_file(route_time_file, "   Time consumed by GenomeAnnStats: {}s\n\n".format(round(end_time-start_time, 2)))
         stats[name]["agat_statistics"] = get_agat_stats(agat_statistics)
 
         # BUSCO
