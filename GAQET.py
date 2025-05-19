@@ -101,49 +101,49 @@ def main():
             name_dir.mkdir(parents=True, exist_ok=True)
         start = time.ctime()
 
-        # # AGAT
-        # start_time = time.time()
-        # agat_statistics = run_agat(values)
-        # end_time = time.time()
-        # print(agat_statistics)
-        # write_time_in_file(route_time_file, "   Time consumed by GenomeAnnStats: {}s\n\n".format(round(end_time-start_time, 2)))
-        # stats[name]["agat_statistics"] = get_agat_stats(agat_statistics)
+        # AGAT
+        start_time = time.time()
+        agat_statistics = run_agat(values)
+        end_time = time.time()
+        print(agat_statistics)
+        write_time_in_file(route_time_file, "   Time consumed by GenomeAnnStats: {}s\n\n".format(round(end_time-start_time, 2)))
+        stats[name]["agat_statistics"] = get_agat_stats(agat_statistics)
 
-        # # BUSCO
-        # start_time = time.time()
-        # gffread_results = run_gffread(values)
-        # print(gffread_results)
-        # busco_results = run_busco(values)
-        # print(busco_results)
-        # end_time = time.time()
-        # write_time_in_file(route_time_file, "   Time consumed by BUSCOCompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
-        # print("\nTime consumed by BUSCOCompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
-        # stats[name]["busco_results"] = get_busco_results(busco_results, lineage=values["lineage"])
+        # BUSCO
+        start_time = time.time()
+        gffread_results = run_gffread(values)
+        print(gffread_results)
+        busco_results = run_busco(values)
+        print(busco_results)
+        end_time = time.time()
+        write_time_in_file(route_time_file, "   Time consumed by BUSCOCompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
+        print("\nTime consumed by BUSCOCompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
+        stats[name]["busco_results"] = get_busco_results(busco_results, lineage=values["lineage"])
 
-        # # LAI
-        # start_time = time.time()
-        # LAI_out_dir =  create_outdir(values)
-        # print(LAI_out_dir)
-        # values["LAI_dir"] = LAI_out_dir["out_fpath"]
-        # suffixerator =  run_suffixerator(values)
-        # if "returncode" in suffixerator:
-        #     if suffixerator["returncode"] == 1:
-        #         raise RuntimeError("Suffixerator has failed")
-        # print(suffixerator)
-        # harvest = run_harvest(values)
-        # print(harvest)
-        # finder = run_finder(values)
-        # print(finder)
-        # cat = concatenate_outputs(values)
-        # print(cat)
-        # LTR = run_LTR_retriever(values)
-        # print(LTR)
-        # LAI = run_LAI(values)
-        # print(LAI)
-        # end_time = time.time()
-        # write_time_in_file(route_time_file, "   Time consumed by LAICompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
-        # print("\nTime consumed by LAICompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
-        # stats[name]["LAI"] = get_LAI(LAI)
+        # LAI
+        start_time = time.time()
+        LAI_out_dir =  create_outdir(values)
+        print(LAI_out_dir)
+        values["LAI_dir"] = LAI_out_dir["out_fpath"]
+        suffixerator =  run_suffixerator(values)
+        if "returncode" in suffixerator:
+            if suffixerator["returncode"] == 1:
+                raise RuntimeError("Suffixerator has failed")
+        print(suffixerator)
+        harvest = run_harvest(values)
+        print(harvest)
+        finder = run_finder(values)
+        print(finder)
+        cat = concatenate_outputs(values)
+        print(cat)
+        LTR = run_LTR_retriever(values)
+        print(LTR)
+        LAI = run_LAI(values)
+        print(LAI)
+        end_time = time.time()
+        write_time_in_file(route_time_file, "   Time consumed by LAICompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
+        print("\nTime consumed by LAICompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
+        stats[name]["LAI"] = get_LAI(LAI)
 
         dir_bam: str = values["alignments"]
         list_bam_files = [file for file in os.listdir(dir_bam) if file.endswith(".bam")]
@@ -170,21 +170,37 @@ def main():
         write_time_in_file(route_time_file, "   Time consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
 
     # Write summary as a table
-    with open(Path(out_dir/"summary.tsv"), "a") as summary:
-        header = ["Name"]
-        header += AGAT_COLS
-        header += ["Busco results"]
-        header += ["LAI"]
-        header += RNASEQ_COLS
-        summary.write("\t".join(header)+"\n")
-        
+    with open(Path(out_dir/"summary.tsv"), "a") as s:
         for name in arguments["input"]:
-            results = [name]
-            # results += [stats[name]["agat_statistics"][stat] for stat in AGAT_COLS]
-            # results += [stats[name]["busco_results"]]
-            # results += [stats[name]["LAI"]]
-            results += str([stats[name][bam]["annotation_scores"][score] for score in RNASEQ_COLS for bam in stats[name].keys()])
-            summary.write("\t".join(results)+"\n")
+            s.write(name)
+            s.write(f"{'Statistic':30} | {'Value':15}\n")
+            for stat in AGAT_COLS:
+                s.write(f"{stat:30} | {stats[name]["agat_statistics"][stat]:15}\n")
+            s.write(f"{'Busco results':30} | {[stats[name]["busco_results"]]:15}\n")
+            s.write(f"{'LAI':30} | {[stats[name]["LAI"]]:15}\n")
+            for bam in stats[name][bam]:
+                s.write(bam)
+                for stat in RNASEQ_COLS:
+                    s.write(f"{stat:30} | {stats[name][bam]["annotation_scores"][score]:15}\n")
+            s.write("-"*48 + "\n"))
+            
+
+        # header = ["Name"]
+        # header += AGAT_COLS
+        # header += ["Busco results"]
+        # header += ["LAI"]
+        # header += RNASEQ_COLS
+        # summary.write("\t".join(header)+"\n")
+        
+        # for name in arguments["input"]:
+        #     results = [name]
+        #     results += [stats[name]["agat_statistics"][stat] for stat in AGAT_COLS]
+        #     results += [stats[name]["busco_results"]]
+        #     results += [stats[name]["LAI"]]
+        #     results += str([stats[name][bam]["annotation_scores"][score] for score in RNASEQ_COLS for bam in stats[name].keys()])
+        #     summary.write("\t".join(results)+"\n")
+
+    
         
 if __name__ == "__main__":
     main()
