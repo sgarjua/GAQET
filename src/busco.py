@@ -64,11 +64,13 @@ def run_busco(arguments: Dict[str, Any]) -> Dict[str, Any]:
 
     #Create output directory
     outdir = arguments["output"] / "BUSCOCompleteness"
+    if not outdir.exists():
+        outdir.mkdir(parents=True, exist_ok=True)
 
     # BUSCO command
-    cmd = "busco -i {} -c {} -o BUSCOCompleteness --out_path {} --mode prot -l {}".format(arguments["input"],
+    cmd = "busco -i {} -c {} --out_path {} --mode prot -l {}".format(arguments["input"],
                                                                 arguments["threads"],
-                                                                arguments["output"],
+                                                                outdir,
                                                                 arguments["lineage"])
 
     if outdir.exists():
