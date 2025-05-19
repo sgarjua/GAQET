@@ -89,6 +89,9 @@ def main():
     name_time_file: str = "time_file.txt"
     route_time_file = out_dir / name_time_file
 
+    print(arguments)
+    print("-----------------------------")
+
     # For each sample: create a folder, run the 4 pipelines and save results in "stats"
     for name, values in arguments["input"].items():
         print("Especie: ",name)
