@@ -183,7 +183,7 @@ def main():
             # results += [stats[name]["agat_statistics"][stat] for stat in AGAT_COLS]
             # results += [stats[name]["busco_results"]]
             # results += [stats[name]["LAI"]]
-            results += [stats[name][bam]["annotation_scores"][score] for str(score) in RNASEQ_COLS for bam in stats[name].keys()]
+            results += str([stats[name][bam]["annotation_scores"][score] for score in RNASEQ_COLS for bam in stats[name].keys()])
             summary.write("\t".join(results)+"\n")
         
 if __name__ == "__main__":
