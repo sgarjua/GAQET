@@ -82,7 +82,7 @@ def main():
     out_dir =  arguments["output"]
     if not out_dir.exists():
         out_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Dictionary for results  
     stats = {}   
 
@@ -170,7 +170,7 @@ def main():
         write_time_in_file(route_time_file, "   Time consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
 
     # Write summary as a table
-    with open("summary.tsv", "w") as summary:
+    with open(Path(out_dir/"summary.tsv"), "a") as summary:
         header = ["Name"]
         header += AGAT_COLS
         header += ["Busco results"]
