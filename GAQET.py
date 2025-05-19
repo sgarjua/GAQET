@@ -182,7 +182,7 @@ def main():
                 s.write(bam)
                 for stat in RNASEQ_COLS:
                     s.write(f"{stat:30} | {stats[name][bam]['annotation_scores'][score]:15}\n")
-            s.write("-"*48 + "\n"))
+            s.write("-"*48 + "\n")
             
 
         # header = ["Name"]
