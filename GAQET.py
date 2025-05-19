@@ -175,13 +175,13 @@ def main():
             s.write(name)
             s.write(f"{'Statistic':30} | {'Value':15}\n")
             for stat in AGAT_COLS:
-                s.write(f"{stat:30} | {stats[name]["agat_statistics"][stat]:15}\n")
-            s.write(f"{'Busco results':30} | {[stats[name]["busco_results"]]:15}\n")
-            s.write(f"{'LAI':30} | {[stats[name]["LAI"]]:15}\n")
+                s.write(f"{stat:30} | {stats[name]['agat_statistics'][stat]:15}\n")
+            s.write(f"{'Busco results':30} | {[stats[name]['busco_results']]:15}\n")
+            s.write(f"{'LAI':30} | {[stats[name]['LAI']]:15}\n")
             for bam in stats[name][bam]:
                 s.write(bam)
                 for stat in RNASEQ_COLS:
-                    s.write(f"{stat:30} | {stats[name][bam]["annotation_scores"][score]:15}\n")
+                    s.write(f"{stat:30} | {stats[name][bam]['annotation_scores'][score]:15}\n")
             s.write("-"*48 + "\n"))
             
 
