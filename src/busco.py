@@ -64,13 +64,11 @@ def run_busco(arguments: Dict[str, Any]) -> Dict[str, Any]:
 
     #Create output directory
     outdir = arguments["output"] / "BUSCOCompleteness"
-    if not outdir.exists():
-        outdir.mkdir(parents=True, exist_ok=True)
 
     # BUSCO command
-    cmd = "busco -i {} -c {} --out_path {} --mode prot -l {}".format(arguments["input"],
+    cmd = "busco -i {} -c {} -o BUSCOCompleteness --out_path {} --mode prot -l {}".format(arguments["input"],
                                                                 arguments["threads"],
-                                                                outdir,
+                                                                arguments["output"],
                                                                 arguments["lineage"])
 
     if outdir.exists():
@@ -80,7 +78,7 @@ def run_busco(arguments: Dict[str, Any]) -> Dict[str, Any]:
                 "returncode": 99}
     else: 
         #Run BUSCO
-        os.chdir(outdir)
+        os.chdir(arguments["output"])
         run_ = subprocess.run(cmd, shell=True, stderr=subprocess.PIPE)
 
         if run_.returncode == 0:
