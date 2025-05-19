@@ -184,7 +184,7 @@ def main():
             # results += [stats[name]["busco_results"]]
             # results += [stats[name]["LAI"]]
             results += [stats[name][bam]["annotation_scores"][score] for score in RNASEQ_COLS for bam in stats[name].keys()]
-            summary.write("\t".join(str(results))+"\n")
+            summary.write("\t".join(map(str, results))+"\n")
         
 if __name__ == "__main__":
     main()
