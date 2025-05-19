@@ -6,6 +6,7 @@ and derive simple F1-like support scores for each genome annotation.
 """
 
 
+import os
 import subprocess
 from pathlib import Path
 from typing import Any, Dict

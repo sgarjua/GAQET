@@ -9,6 +9,7 @@ Each runner returns a dictionary with the executed command, an informational mes
 the main output path, and a ``returncode`` (99 means “already done”).
 """
 
+import os
 import subprocess
 from pathlib import Path
 from typing import Dict, Any
