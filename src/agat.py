@@ -19,6 +19,7 @@ from typing import Dict, Any
 # ---------------------------------------------------------------------------
 def run_agat(arguments: Dict[str, Any]) -> Dict[str, Any]:
     """Run AGAT statistics (or skip if already done)."""
+    cwd = Path(os.getcwd())
 
     # Output directory and file
     outdir = arguments["output"] / "GenomeAnnStats"
@@ -37,6 +38,7 @@ def run_agat(arguments: Dict[str, Any]) -> Dict[str, Any]:
                 "returncode": 99}
     else:
         # Run AGAT
+        os.chdir(outdir)
         run_ = subprocess.run(command, shell=True, stdout=subprocess.PIPE)
 
         if run_.returncode == 0:
@@ -44,6 +46,7 @@ def run_agat(arguments: Dict[str, Any]) -> Dict[str, Any]:
         else:
             msg = "AGAT Failed: \n {}".format(run_.stdout)
 
+        os.chdir(cwd)
         return {"command": command,
                 "msg": msg,
                 "out_fpath": out_fpath,
