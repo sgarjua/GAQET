@@ -89,20 +89,17 @@ def main():
     name_time_file: str = "time_file.txt"
     route_time_file = out_dir / name_time_file
 
-    print(arguments)
-    print("-----------------------------")
-
     # For each sample: create a folder, run the 4 pipelines and save results in "stats"
     for name, values in arguments["input"].items():
         print("Especie: ",name)
         write_time_in_file(route_time_file, name)
-        stats[name] = {}
-        name_dir = out_dir / name
-        values["output"] = name_dir
-        values["threads"] = arguments["threads"]
-        if not name_dir.exists():
-            name_dir.mkdir(parents=True, exist_ok=True)
-        start = time.ctime()
+        # stats[name] = {}
+        # name_dir = out_dir / name
+        # values["output"] = name_dir
+        # values["threads"] = arguments["threads"]
+        # if not name_dir.exists():
+        #     name_dir.mkdir(parents=True, exist_ok=True)
+        # start = time.ctime()
 
         # # AGAT
         # start_time = time.time()
@@ -148,29 +145,29 @@ def main():
         # print("\nTime consumed by LAICompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
         # stats[name]["LAI"] = get_LAI(LAI)
 
-        dir_bam: str = values["alignments"]
-        list_bam_files = [file for file in os.listdir(dir_bam) if file.endswith(".bam")]
-        print(list_bam_files)
-        print(len(list_bam_files))
-        start_time = time.time()
+        # dir_bam: str = values["alignments"]
+        # list_bam_files = [file for file in os.listdir(dir_bam) if file.endswith(".bam")]
+        # print(list_bam_files)
+        # print(len(list_bam_files))
+        # start_time = time.time()
 
-        for bam in list_bam_files:
-            print("Vamos a por el bam: ", bam)
-            print("---------------------------------------------")
-            values["alignments"] = dir_bam + bam
-            print(values["alignments"])
-            # RNA-seq support
-            stringtie = run_stringtie(values)
-            print(stringtie)
-            gffcompare = run_gffcompare(values)
-            print(gffcompare)
-            annotation_scores = calculate_annotation_scores(values)
-            print(annotation_scores)
-            stats[name][bam] = {}
-            stats[name][bam]["annotation_scores"] = annotation_scores
-        end_time = time.time()
-        print("\nTime consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
-        write_time_in_file(route_time_file, "   Time consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
+        # for bam in list_bam_files:
+        #     print("Vamos a por el bam: ", bam)
+        #     print("---------------------------------------------")
+        #     values["alignments"] = dir_bam + bam
+        #     print(values["alignments"])
+        #     # RNA-seq support
+        #     stringtie = run_stringtie(values)
+        #     print(stringtie)
+        #     gffcompare = run_gffcompare(values)
+        #     print(gffcompare)
+        #     annotation_scores = calculate_annotation_scores(values)
+        #     print(annotation_scores)
+        #     stats[name][bam] = {}
+        #     stats[name][bam]["annotation_scores"] = annotation_scores
+        # end_time = time.time()
+        # print("\nTime consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
+        # write_time_in_file(route_time_file, "   Time consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
 
     # Write summary as a table
     with open("summary.tsv", "w") as summary:
