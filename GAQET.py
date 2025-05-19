@@ -163,8 +163,8 @@ def main():
             print(gffcompare)
             annotation_scores = calculate_annotation_scores(values)
             print(annotation_scores)
-            stats[name][bam] = {}
-            stats[name][bam]["annotation_scores"] = annotation_scores
+            stats[name]["annotation_scores"] = {}
+            stats[name]["annotation_scores"][bam] = annotation_scores
         end_time = time.time()
         print("\nTime consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
         write_time_in_file(route_time_file, "   Time consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
@@ -172,17 +172,20 @@ def main():
     # Write summary as a table
     with open(Path(out_dir/"summary.tsv"), "a") as s:
         for name in arguments["input"]:
-            s.write(name)
+            s.write(name+ "\n")
             s.write(f"{'Statistic':30} | {'Value':15}\n")
-            for stat in AGAT_COLS:
-                s.write(f"{stat:30} | {stats[name]['agat_statistics'][stat]:15}\n")
-            s.write(f"{'Busco results':30} | {[stats[name]['busco_results']]:15}\n")
-            s.write(f"{'LAI':30} | {[stats[name]['LAI']]:15}\n")
-            for bam in stats[name][bam]:
-                s.write(bam)
-                for stat in RNASEQ_COLS:
-                    s.write(f"{stat:30} | {stats[name][bam]['annotation_scores'][score]:15}\n")
             s.write("-"*48 + "\n")
+            for stat in AGAT_COLS:
+                val = stats[name]["agat_statistics"][stat]
+                s.write(f"{stat:30} | {val:15}\n")
+            s.write(f"{'Busco results':30} | {stats[name]['busco_results']:15}\n")
+            s.write(f"{'LAI':30} | {[stats[name]['LAI']]:15}\n")
+            for bam in list_bam_files:
+                s.write(bam)
+                for score in RNASEQ_COLS:
+                    val = stats[name]['annotation_scores'][bam][score]
+                    s.write(f"{score:30} | {val:15}\n")
+            s.write("-"*48 + "\n\n")
             
 
         # header = ["Name"]
