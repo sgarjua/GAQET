@@ -105,7 +105,11 @@ def calculate_annotation_scores(arguments: Dict[str, Any]) -> Dict[str, Any]:
                     line = line.split()
                     sensitivity = float(line[2])
                     precision = float(line[4])
-                    f1_calc = 2*(sensitivity*precision)/(sensitivity+precision)
+                    denom = sensitivity + precision
+                    if denom == 0:
+                        f1_calc = 0.0
+                    else:
+                        f1_calc = 2*(sensitivity*precision)/(sensitivity+precision)
                     f1_scores[check[:-1]+"_f1"] = f1_calc
             # Matching numbers
             for check in number_check:
