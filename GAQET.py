@@ -151,6 +151,7 @@ def main():
         print(len(list_bam_files))
         start_time = time.time()
 
+        stats[name]["annotation_scores"] = {}
         for bam in list_bam_files:
             print("---------------------------------------------")
             print("Vamos a por el bam: ", bam)
@@ -163,7 +164,6 @@ def main():
             print(gffcompare)
             annotation_scores = calculate_annotation_scores(values)
             print(annotation_scores)
-            stats[name]["annotation_scores"] = {}
             stats[name]["annotation_scores"][bam] = annotation_scores
         end_time = time.time()
         print("\nTime consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
