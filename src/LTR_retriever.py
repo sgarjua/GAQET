@@ -196,7 +196,7 @@ def run_LTR_retriever(arguments: Dict[str, Any]) -> Dict[str, Any]:
                                                                                 arguments["threads"])
 
     # Check if LTR_retriever is already done
-    outfile = arguments["LAI_dir"] / "{}.pass.list".format(Path(arguments["ref_assembly"]).name)
+    outfile = arguments["LAI_dir"] / "{}.mod.pass.list".format(Path(arguments["ref_assembly"]).name)
     if outfile.exists():
         return {"command": cmd, 
                 "msg": "LTR_retriever already done",
