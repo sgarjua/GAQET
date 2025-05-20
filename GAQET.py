@@ -182,7 +182,7 @@ def main():
             s.write(f"{'Busco results':30} | {stats[name]['busco_results']:15}\n")
             s.write(f"{'LAI':30} | {stats[name]['LAI']:15}\n")
             for bam in list_bam_files:
-                s.write(bam)
+                s.write(bam+ "\n")
                 for score in RNASEQ_COLS:
                     val = stats[name]['annotation_scores'][bam][score]
                     s.write(f"{score:30} | {val:15}\n")
