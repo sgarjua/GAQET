@@ -171,7 +171,7 @@ def main():
 
     # Write summary as a table
     print(stats[name]['annotation_scores'])
-    with open(Path(out_dir/"summary.tsv"), "a") as s:
+    with open(Path(out_dir/"summary.tsv"), "w") as s:
         for name in arguments["input"]:
             s.write(name+ "\n")
             s.write(f"{'Statistic':30} | {'Value':15}\n")
