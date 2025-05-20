@@ -179,7 +179,7 @@ def main():
                 val = stats[name]["agat_statistics"][stat]
                 s.write(f"{stat:30} | {val:15}\n")
             s.write(f"{'Busco results':30} | {stats[name]['busco_results']:15}\n")
-            s.write(f"{'LAI':30} | {[stats[name]['LAI']]:15}\n")
+            s.write(f"{'LAI':30} | {stats[name]['LAI']:15}\n")
             for bam in list_bam_files:
                 s.write(bam)
                 for score in RNASEQ_COLS:
