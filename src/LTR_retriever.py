@@ -272,4 +272,4 @@ def get_LAI(lai_run: Dict[str, Any]) -> str:
                 line = line.strip()
                 line = line.split()
                 LAI_value = line[6]
-                return f"LAI:{LAI_value}"
+                return f"{LAI_value}"
