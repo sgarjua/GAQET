@@ -123,11 +123,11 @@ def run_finder(arguments: Dict[str, Any]) -> Dict[str, Any]:
                                                                                                 arguments["threads"])
 
     # Check if FINDER is already done
-    out_file = arguments["LAI_dir"] / "{}.finder.combine.scn".format(Path(arguments["ref_assembly"]).name)
-    if out_file.exists():
+    outfile = arguments["LAI_dir"] / "{}.finder.combine.scn".format(Path(arguments["ref_assembly"]).name)
+    if outfile.exists():
         return {"command": cmd,
                 "msg": "harvest already done",
-                "out_fpath": out_file,
+                "out_fpath": outfile,
                 "returncode": 99}
 
     else:
@@ -146,7 +146,7 @@ def run_finder(arguments: Dict[str, Any]) -> Dict[str, Any]:
 
         return {"command": cmd, 
                 "msg": msg,
-                "out_fpath": out_file, 
+                "out_fpath": outfile, 
                 "returncode": run_.returncode}
 
 # ---------------------------------------------------------------------------
@@ -162,11 +162,11 @@ def concatenate_outputs(arguments: Dict[str, Any]) -> Dict[str, Any]:
                                                                             outpath)
 
     # Check if "cat" is already done
-    out_file = arguments["LAI_dir"] / "{}.rawLTR.scn".format(Path(arguments["ref_assembly"]).name)
-    if out_file.exists():
+    outfile = arguments["LAI_dir"] / "{}.rawLTR.scn".format(Path(arguments["ref_assembly"]).name)
+    if outfile.exists():
         return {"command": cmd, 
                 "msg": "Concatenation of the output files from Harvest and Finder is already done.",
-                "out_fpath": out_file,
+                "out_fpath": outfile,
                 "returncode": 99}
 
     else:
@@ -180,7 +180,7 @@ def concatenate_outputs(arguments: Dict[str, Any]) -> Dict[str, Any]:
 
         return {"command": cmd,
                 "msg": msg,
-                "out_fpath": out_file, 
+                "out_fpath": outfile, 
                 "returncode": run_.returncode}
 
 # ---------------------------------------------------------------------------
@@ -195,9 +195,11 @@ def run_LTR_retriever(arguments: Dict[str, Any]) -> Dict[str, Any]:
                                                                                 Path(arguments["ref_assembly"]).name,
                                                                                 arguments["threads"])
 
+    outfile_mod = arguments["LAI_dir"] / "{}.mod.pass.list".format(Path(arguments["ref_assembly"]).name)
+    outfile_without_mod = arguments["LAI_dir"] / "{}.pass.list".format(Path(arguments["ref_assembly"]).name)
+
     # Check if LTR_retriever is already done
-    outfile = arguments["LAI_dir"] / "{}.mod.pass.list".format(Path(arguments["ref_assembly"]).name)
-    if outfile.exists():
+    if outfile_mod.exists() or outfile_without_mod.exists():
         return {"command": cmd, 
                 "msg": "LTR_retriever already done",
                 "out_fpath": outfile,
@@ -229,13 +231,19 @@ def run_LAI(arguments: Dict[str, Any]) -> Dict[str, Any]:
     """Run *LAI* tool or skip if done."""
     cwd = Path(os.getcwd())
 
-    # LAI command
-    cmd = "LAI -genome {} -intact {}.mod.pass.list -all {}.mod.out".format(Path(arguments["ref_assembly"]).name,
-                                                                            Path(arguments["ref_assembly"]).name,
-                                                                            Path(arguments["ref_assembly"]).name)
-
-
+    name_all = Path(arguments["ref_assembly"]).name + ".mod.out"
+    name_intact = Path(arguments["ref_assembly"]).name + ".mod.pass.list"
     outfile = arguments["LAI_dir"] / "{}.mod.out.LAI".format(Path(arguments["ref_assembly"]).name)
+    if not os.path.exists(name_intact):
+        name_intact = Path(arguments["ref_assembly"]).name + ".pass.list"
+        name_all = Path(arguments["ref_assembly"]).name + ".out"
+        outfile = arguments["LAI_dir"] / "{}.out.LAI".format(Path(arguments["ref_assembly"]).name)
+
+    # LAI command
+    cmd = "LAI -genome {} -intact {} -all {}".format(Path(arguments["ref_assembly"]).name,
+                                                    name_intact,
+                                                    name_all)
+
     if outfile.exists():
         return {"command": cmd, 
                 "msg": "LAI already done",
