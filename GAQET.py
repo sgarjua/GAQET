@@ -170,7 +170,6 @@ def main():
         write_time_in_file(route_time_file, "   Time consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
 
     # Write summary as a table
-    print(stats[name]['annotation_scores'])
     with open(Path(out_dir/"summary.tsv"), "w") as s:
         for name in arguments["input"]:
             s.write(name+ "\n")
@@ -187,7 +186,6 @@ def main():
                     val = stats[name]['annotation_scores'][bam][score]
                     s.write(f"{score:30} | {val:15}\n")
             s.write("-"*48 + "\n\n")
-
 
         
 if __name__ == "__main__":
