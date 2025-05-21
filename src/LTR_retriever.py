@@ -199,11 +199,17 @@ def run_LTR_retriever(arguments: Dict[str, Any]) -> Dict[str, Any]:
     outfile_without_mod = arguments["LAI_dir"] / "{}.pass.list".format(Path(arguments["ref_assembly"]).name)
 
     # Check if LTR_retriever is already done
-    if outfile_mod.exists() or outfile_without_mod.exists():
+    if outfile_mod.exists():
         return {"command": cmd, 
                 "msg": "LTR_retriever already done",
-                "out_fpath": outfile,
+                "out_fpath": outfile_mod,
                 "returncode": 99}
+    elif outfile_without_mod.exists():
+        return {"command": cmd, 
+                "msg": "LTR_retriever already done",
+                "out_fpath": outfile_without_mod,
+                "returncode": 99}
+
 
     else:
         # Change the working directory to the "output" path
@@ -221,7 +227,7 @@ def run_LTR_retriever(arguments: Dict[str, Any]) -> Dict[str, Any]:
 
         return {"command": cmd, 
                 "msg": msg,
-                "out_fpath": outfile, 
+                "out_fpath": outfile_mod if outfile_mod.exists() else outfile_without_mod, 
                 "returncode": run_.returncode}
 
 # ---------------------------------------------------------------------------
