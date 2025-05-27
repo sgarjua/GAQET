@@ -11,6 +11,7 @@ GAQET is a Python-based tool designed to evaluate the quality of genome annotati
 - BUSCO == 5.8.3 (https://github.com/WenchaoLin/BUSCO-Mod)
 - LTR_retriever == 3.0.2 (https://github.com/oushujun/LTR_retriever)
 - StringTie == 3.0.0 (https://github.com/gpertea/stringtie)
+- GFFcompare == 0.12.8 (https://github.com/gpertea/gffcompare) 
 
 ## Installation
 
