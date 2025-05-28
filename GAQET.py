@@ -107,6 +107,7 @@ def main():
         end_time = time.time()
         print(agat_statistics)
         write_time_in_file(route_time_file, "   Time consumed by GenomeAnnStats: {}s\n\n".format(round(end_time-start_time, 2)))
+        print("\nTime consumed by GenomeAnnStats: {}s\n\n".format(round(end_time-start_time, 2)))
         stats[name]["agat_statistics"] = get_agat_stats(agat_statistics)
 
         # BUSCO
