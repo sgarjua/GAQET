@@ -120,31 +120,32 @@ def main():
         print("\nTime consumed by BUSCOCompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
         stats[name]["busco_results"] = get_busco_results(busco_results, lineage=values["lineage"])
 
-        # LAI
-        start_time = time.time()
-        LAI_out_dir =  create_outdir(values)
-        print(LAI_out_dir)
-        values["LAI_dir"] = LAI_out_dir["out_fpath"]
-        suffixerator =  run_suffixerator(values)
-        if "returncode" in suffixerator:
-            if suffixerator["returncode"] == 1:
-                raise RuntimeError("Suffixerator has failed")
-        print(suffixerator)
-        harvest = run_harvest(values)
-        print(harvest)
-        finder = run_finder(values)
-        print(finder)
-        cat = concatenate_outputs(values)
-        print(cat)
-        LTR = run_LTR_retriever(values)
-        print(LTR)
-        LAI = run_LAI(values)
-        print(LAI)
-        end_time = time.time()
-        write_time_in_file(route_time_file, "   Time consumed by LAICompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
-        print("\nTime consumed by LAICompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
-        stats[name]["LAI"] = get_LAI(LAI)
+        # # LAI
+        # start_time = time.time()
+        # LAI_out_dir =  create_outdir(values)
+        # print(LAI_out_dir)
+        # values["LAI_dir"] = LAI_out_dir["out_fpath"]
+        # suffixerator =  run_suffixerator(values)
+        # if "returncode" in suffixerator:
+        #     if suffixerator["returncode"] == 1:
+        #         raise RuntimeError("Suffixerator has failed")
+        # print(suffixerator)
+        # harvest = run_harvest(values)
+        # print(harvest)
+        # finder = run_finder(values)
+        # print(finder)
+        # cat = concatenate_outputs(values)
+        # print(cat)
+        # LTR = run_LTR_retriever(values)
+        # print(LTR)
+        # LAI = run_LAI(values)
+        # print(LAI)
+        # end_time = time.time()
+        # write_time_in_file(route_time_file, "   Time consumed by LAICompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
+        # print("\nTime consumed by LAICompleteness: {}s\n\n".format(round(end_time-start_time, 2)))
+        # stats[name]["LAI"] = get_LAI(LAI)
 
+        # RNA-seq support
         dir_bam: str = values["alignments"]
         list_bam_files = [file for file in os.listdir(dir_bam) if file.endswith(".bam")]
         print(list_bam_files)
@@ -157,7 +158,7 @@ def main():
             print("Vamos a por el bam: ", bam)
             values["alignments"] = dir_bam + bam
             print(values["alignments"])
-            # RNA-seq support
+            
             stringtie = run_stringtie(values)
             print(stringtie)
             gffcompare = run_gffcompare(values)
@@ -179,7 +180,7 @@ def main():
                 val = stats[name]["agat_statistics"][stat]
                 s.write(f"{stat:30} | {val:15}\n")
             s.write(f"{'Busco results':30} | {stats[name]['busco_results']:15}\n")
-            s.write(f"{'LAI':30} | {stats[name]['LAI']:15}\n")
+            # s.write(f"{'LAI':30} | {stats[name]['LAI']:15}\n")
             for bam in list_bam_files:
                 s.write(bam+ "\n")
                 for score in RNASEQ_COLS:
