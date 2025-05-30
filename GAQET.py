@@ -166,6 +166,7 @@ def main():
             print(gffcompare)
             annotation_scores = calculate_annotation_scores(values)
             print(annotation_scores)
+            stats[name]["annotation_scores"][bam] ={}
             stats[name]["annotation_scores"][bam] = annotation_scores
         end_time = time.time()
         print("\nTime consumed by RNASeqCheck: {}s\n\n".format(round(end_time-start_time, 2)))
@@ -185,7 +186,10 @@ def main():
             # s.write(f"{'LAI':30} | {stats[name]['LAI']:15}\n")
             for bam in list_bam_files:
                 s.write(bam+ "\n")
+                print(bam in list(stats[name]['annotation_scores'].keys()))
+                print("------------")
                 for score in RNASEQ_COLS:
+                    print(score in list(stats[name]['annotation_scores'][bam].keys()))
                     val = stats[name]['annotation_scores'][bam][score]
                     s.write(f"{score:30} | {val:15}\n")
             s.write("-"*48 + "\n\n")
