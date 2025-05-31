@@ -52,14 +52,14 @@ def run_stringtie(arguments: Dict[str, Any]) -> Dict[str, Any]:
 # 2.  Compare transcripts with GFFcompare
 # ---------------------------------------------------------------------------
 def run_gffcompare(arguments: Dict[str, Any]) -> Dict[str, Any]:
-    """Run *gffcompare* against the reference annotation (or skip if done)."""
+    """Run *gffcompare* against the annotation (or skip if done)."""
     
     outdir = arguments["output"] / "RNASeqCheck"
     gtffile = outdir / "{}.gtf".format(Path(arguments["alignments"]).stem)
     output_name = outdir / Path(arguments["alignments"]).stem
     
     # GFFcompare command line
-    cmd = "gffcompare -r {} {} -o {}.stats".format(arguments["ref_annotation"],
+    cmd = "gffcompare -r {} {} -o {}.stats".format(arguments["annotation"],
                                             gtffile,
                                             output_name)
     
