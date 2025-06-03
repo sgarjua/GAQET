@@ -129,7 +129,8 @@ def get_agat_stats(agat_statistics: Dict[str, Any]) -> Dict[str, Any]:
         # "Shortest cds piece (bp)": "Shortest CDS Model Length (bp)",
         "Shortest intron into exon part (bp)": "Shortest Intron Length (bp)"
     }
-    
+
+    mapping = {}  
     # Read the statistics file produced by AGAT
     with open(agat_statistics["out_fpath"], 'r') as stats_fhand:
         for line in stats_fhand:
