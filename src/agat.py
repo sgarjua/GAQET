@@ -130,28 +130,6 @@ def get_agat_stats(agat_statistics: Dict[str, Any]) -> Dict[str, Any]:
         "Shortest intron into exon part (bp)": "Shortest Intron Length (bp)"
     }
 
-    mapping_lncrna = {
-        "Number of gene": "Gene_Models (N)",
-        "Number of lncrna": "Transcript_Models (N)",
-        # "Number of cds": "CDS_Models (N)",
-        "Number of exon": "Exons (N)",
-        # "Number of five_prime_utr": "UTR5' (N)",
-        # "Number of three_prime_utr": "UTR3' (N)",
-        "Number gene overlapping": "Overlapping_Gene_Models (N)",
-        "Number of single exon gene": "Single Exon Gene Models (N)",
-        "Number of single exon lncrna": "Single Exon Transcripts (N)",
-        "Total gene length (bp)": "Total Gene Space (Mb)",
-        "mean gene length (bp)": "Mean Gene Model Length (bp)",
-        # "mean cds length (bp)": "Mean CDS Model Length (bp)",
-        "mean exon length (bp)": "Mean Exon Length (bp)",
-        # "mean intron in cds length (bp)": "Mean Intron Length (bp)",
-        "Longest gene (bp)": "Longest Gene Model Length (bp)",
-        # "Longest cds (bp)": "Longest CDS Model Length (bp)",
-        # "Longest intron into cds part (bp)": "Longest Intron Length (bp)",
-        "Shortest gene (bp)": "Shortest Gene Model Length (bp)",
-        # "Shortest cds piece (bp)": "Shortest CDS Model Length (bp)",
-        "Shortest intron into exon part (bp)": "Shortest Intron Length (bp)"
-    }
 
     mapping = {}  
     # Read the statistics file produced by AGAT
@@ -162,8 +140,6 @@ def get_agat_stats(agat_statistics: Dict[str, Any]) -> Dict[str, Any]:
                 mapping = mapping_transcript
             elif "--- mrna ---" in line:
                 mapping = mapping_mrna
-            elif "--- lncrna ---" in line:
-                mapping = mapping_lncrna
 
             if not line.rstrip():   # empty line → skip it
                 continue
