@@ -237,6 +237,7 @@ def run_LAI(arguments: Dict[str, Any]) -> Dict[str, Any]:
     """Run *LAI* tool or skip if done."""
     cwd = Path(os.getcwd())
 
+    # Create input-files paths and check if have "mod" or not
     name_all = Path(arguments["ref_assembly"]).name + ".mod.out"
     name_intact = Path(arguments["ref_assembly"]).name + ".mod.pass.list"
     outfile = arguments["LAI_dir"] / "{}.mod.out.LAI".format(Path(arguments["ref_assembly"]).name)

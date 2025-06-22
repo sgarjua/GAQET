@@ -91,7 +91,7 @@ def main():
 
     # For each sample: create a folder, run the 4 pipelines and save results in "stats"
     for name, values in arguments["input"].items():
-        print("Especie: ",name)
+        print("Specie: ",name)
         write_time_in_file(route_time_file, name)
         stats[name] = {}
         name_dir = out_dir / name
@@ -155,11 +155,7 @@ def main():
 
         stats[name]["annotation_scores"] = {}
         for bam in list_bam_files:
-            print("---------------------------------------------")
-            print("Vamos a por el bam: ", bam)
             values["alignments"] = dir_bam + bam
-            print(values["alignments"])
-            
             stringtie = run_stringtie(values)
             print(stringtie)
             gffcompare = run_gffcompare(values)
