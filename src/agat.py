@@ -125,17 +125,20 @@ def get_agat_stats(agat_statistics: Dict[str, Any]) -> Dict[str, Any]:
 
     mapping = {}  
     # Read the statistics file produced by AGAT
+    found : bool = False
     with open(agat_statistics["out_fpath"], 'r') as stats_fhand:
         for line in stats_fhand:
             # Switch mapping depending on the section header
             if "--- transcript ---" in line:
                 mapping = mapping_transcript
+                found = True
             elif "--- mrna ---" in line:
+                found = True
                 mapping = mapping_mrna
 
             if not line.rstrip():   # empty line → skip it
                 continue
-            if ':' in line:         # end-of-block marker → stop reading
+            if ':' in line and found:         # end-of-block marker → stop reading
                 break
 
             # Save metrics we care about
